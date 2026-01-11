@@ -1,0 +1,19 @@
+Mistral-7B-Instruct-v0.3
+
+Qwen/Qwen2.5-7B-Instruct
+
+Qwen/Qwen3-1.7B-Instruct
+
+google/gemma-3-2b-it
+
+google/gemma-3n-E2B-it
+
+mistralai/Ministral-3B-Instruct-250
+
+Ministral 3 8B
+
+meta-llama/Llama-3.2-3B-Instruct
+
+DeepSeek-R1-Distill-Qwen-1.5B
+
+DeepSeek-R1-Distill-Qwen-7B

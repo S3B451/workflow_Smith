@@ -3,12 +3,22 @@ from langgraph.graph import StateGraph, START, END
 from typing import TypedDict, Literal
 from IPython.display import display, Image
 import graphviz
+from nodes import SpecializedNodes
+from model_manager import LocalModelManager
+from workflow_logger import WorkflowLogger
+
+##ich uebergebe den manager die auswahl der modelle. er verwaltet das laden und entladen
+manager = LocalModelManager("modelle.json")
+logger = WorkflowLogger()
+nodes = SpecializedNodes(manager, logger)
 
 class PortfolioState(TypedDict):
-    amount_usd: float
-    target_currency: Literal["INR", "EUR"]
-    total_usd: float
-    total: float
+    portfolio_items: list[dict]
+    analyst_out: str    # Ergebnis von Llama
+    teacher_out: str    # Ergebnis von DeepSeek
+    strategist_out: str # Ergebnis von Mistral
+    metrics: list[dict] # Die Performance-Daten
+    report: str         # Der finale Text
 #nodes gestalten
 def calc_total(state: PortfolioState) -> PortfolioState:
     state["total_usd"] = state["amount_usd"] * 1.08
@@ -26,30 +36,42 @@ def choose_conversion(state: PortfolioState) -> str:
     return state["target_currency"]
 
 #nodes definieren
-builder = StateGraph(PortfolioState) #DTO definieren
-builder.add_node("calc_total", calc_total)
-builder.add_node("convert_to_inr", convert_to_inr)
-builder.add_node("convert_to_eur", convert_to_eur)
+workflow = StateGraph(PortfolioState) #DTO definieren
+workflow.add_node("analyst", nodes.llama_3_2_3_b_node)
+workflow.add_node("teacher", nodes.deepseek_r1_7b_node)
+workflow.add_node("strategist", nodes.mistral_7b_node)
+workflow.add_node("reporter", nodes.reporter_node)
 
+# Kanten definieren
 #nodes verbinden und flow definieren
-builder.add_edge(START, "calc_total")
-builder.add_conditional_edges(
-    "calc_total",
-     choose_conversion,
-     {
-         "INR": "convert_to_inr", 
-         "EUR": "convert_to_eur"
-         }) #input und funktion als output
-builder.add_edge("convert_to_inr", END)
-builder.add_edge("convert_to_eur", END)
 
-graph = builder.compile()
+workflow.set_entry_point("analyst")
+workflow.add_edge("analyst", "teacher")
+workflow.add_edge("teacher", "strategist")
+workflow.add_edge("strategist", "reporter")
+workflow.add_edge("reporter", END)
+#nodes verbinden und flow definieren
 
+graph = workflow.compile()
+
+# display(Image(graph.get_graph().draw_mermaid_png()))
+print(graph.get_graph().draw_ascii())
+
+initial_input = {
+    "portfolio_items": [
+        {"name": "Nvidia", "amount": 10},
+        {"name": "Bitcoin", "amount": 0.5},
+        
+    ],
+    "metrics": [] # Wichtig, damit die Liste existiert!
+}
+print("Starte Workflow...")
+final_state = graph.invoke(initial_input)
 # display(Image(graph.get_graph().draw_mermaid_png()))
 print(graph.get_graph().draw_ascii())
 
 # def portfolio_flow(amount_usd: float) -> dict:
 #     return graph.run({"amount_usd": amount_usd})
 
-# result = portfolio_flow(1000)
-# print("Final State:", result)
+print("\n--- FINALER BERICHT ---")
+print(final_state["report"])
