@@ -2,35 +2,34 @@ import json
 import os
 import torch
 import gc
+import time 
+from datetime import datetime 
 from transformers import AutoModelForCausalLM, AutoTokenizer, AutoProcessor, AutoModelForVision2Seq
+from console_feedback import ActivitySpinner
+
+def get_ts(): 
+    return datetime.now().strftime("%H:%M:%S.%f")[:-3] 
 
 class LocalModelManager:
     def __init__(self, json_path: str):
-        self.active_path = None # Aktuell geladenes Modell
+        self.spinner = ActivitySpinner()
+        self.active_path = None 
         self.model = None
         self.tokenizer = None
-        self.processor = None # Für Vision-Modelle (Phi, Florence, etc.)
+        self.processor = None 
         
-        # JSON einlesen und Mapping erstellen
         with open(json_path, 'r', encoding='utf-8') as f:
             self.model_data = json.load(f)
         
-        # Schneller Zugriff über den Namen
         self.model_lookup = {m['name']: m['path'] for m in self.model_data}
 
     ############################### GPU Ladeanzeige ###############################################
     def _get_vram_info(self):
-        """Hilfsfunktion: Gibt freien und totalen VRAM in MB zurück."""
+        """Hilfsfunktion: Gibt freien und totalen VRAM in GB zurück.""" 
         if torch.cuda.is_available():
             free, total = torch.cuda.mem_get_info()
-            return free / 1024**2, total / 1024**2
+            return free / 1024**3, total / 1024**3 
         return 0, 0
-
-    def _print_stats(self, message):
-        """Druckt eine Statusmeldung mit aktuellen VRAM Werten."""
-        free, total = self._get_vram_info()
-        used = total - free
-        print(f"--- [{message}] VRAM: {used:.0f}MB / {total:.0f}MB genutzt ({free:.0f}MB frei) ---")
 
     ###############################################################################################
 
@@ -48,21 +47,18 @@ class LocalModelManager:
         if self.active_path is not None:
             self.unload()
 
-        self._print_stats("Vor Laden")
-        print(f"--- [Manager] Lade: {model_path} ---")
+        print(f"[{get_ts()}] [VRAM] LOAD start: {model_path}") 
+        self.spinner.start("Lade Modellgewichte...")
+        start_load = time.time() 
         
-        # Unterscheidung Vision vs. Text
         if is_vision:
             self.processor = AutoProcessor.from_pretrained(model_path, trust_remote_code=True)
-    
-            # Florence-2 mag kein device_map="auto"
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_path, 
-                dtype=torch.float16,    # "dtype" statt "torch_dtype" (sauberer)
+                dtype=torch.float16, 
                 trust_remote_code=True,
                 attn_implementation="eager"
-                # device_map="auto" <-- Diese Zeile muss weg!
-            ).to("cuda") # <-- Das hier explizit hinzufügen
+            ).to("cuda")
             self.tokenizer = None
             
         else:
@@ -70,24 +66,33 @@ class LocalModelManager:
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_path, torch_dtype=torch.float16, device_map="auto"
             )
+        self.spinner.stop()    
+        load_duration = time.time() - start_load 
+        free_gb, total_gb = self._get_vram_info() 
+        used_gb = total_gb - free_gb 
         
         self.active_path = model_path
-        self._print_stats("Nach Laden")
+        # 🔵 self._print_stats("Nach Laden")
+        print(f"[{get_ts()}] [VRAM] LOAD finished in {load_duration:.2f}s | Occupied: {used_gb:.2f} GB") 
         return self.model, (self.tokenizer if not is_vision else self.processor)
 
     def unload(self):
-        self._print_stats("Vor Entladen")
+        # 🔵 self._print_stats("Vor Entladen")
+        print(f"[{get_ts()}] [VRAM] UNLOAD start") 
+        start_unload = time.time() 
+        
         self.model = None
         self.tokenizer = None
         self.processor = None
         self.active_path = None
+        
         gc.collect()
         if torch.cuda.is_available():
             torch.cuda.empty_cache()
             torch.cuda.synchronize()
-        self.active_path = None
-        self._print_stats("Nach Entladen")
-
-
-
-    
+        
+        unload_duration = time.time() - start_unload 
+        free_gb, total_gb = self._get_vram_info() 
+        
+        # 🔵 self._print_stats("Nach Entladen")
+        print(f"[{get_ts()}] [VRAM] UNLOAD finished in {unload_duration:.2f}s | Free: {free_gb:.2f} GB") 

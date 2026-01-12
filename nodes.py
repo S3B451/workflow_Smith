@@ -3,12 +3,17 @@ import torch
 from PIL import Image
 import time
 import functools
+from datetime import datetime
+from console_feedback import ActivitySpinner
 
+def get_ts(): 
+    return datetime.now().strftime("%H:%M:%S.%f")[:-3]
 
 def log_node_performance(model_key: str): # model_key ist z.B. "meta-llama/..."
     def decorator(func):
         @functools.wraps(func)
         def wrapper(self, state: Dict[str, Any]) -> Dict[str, Any]:
+            print(f"[{get_ts()}] [NODE] START: {func.__name__}")
             start_time = time.time()
             
             # HIER DIE ÄNDERUNG: Nur 2 Werte entpacken
@@ -28,12 +33,14 @@ def log_node_performance(model_key: str): # model_key ist z.B. "meta-llama/..."
 
 
 class SpecializedNodes:
-    def __init__(self, manager, logger):
+    def __init__(self, manager, logger, interface):
         """
         Initialisiert die Nodes mit dem ModelManager und dem WorkflowLogger.
         """
+        self.spinner = ActivitySpinner()
         self.manager = manager
         self.logger = logger
+        self.interface = interface
 
     # 1. Llama 3.2 Node (Analyst)
     @log_node_performance("meta-llama/Llama-3.2-3B-Instruct")
@@ -45,9 +52,12 @@ class SpecializedNodes:
         prompt = f"Analysiere folgendes Portfolio auf Risiko: {state.get('portfolio_items')}"
         
         inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+        
+        self.spinner.start("Generiere Antwort...")
         with torch.no_grad():
             outputs = model.generate(**inputs, max_new_tokens=200)
-        
+        self.spinner.stop()
+
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         # Rückgabe für den Decorator: (Antwort-Text, Token-Anzahl)
         return response, outputs[0].shape[0]
@@ -60,11 +70,13 @@ class SpecializedNodes:
         model, tokenizer = self.manager.load_by_name(model_name)
         
         prompt = f"Analysiere folgendes Portfolio auf Risiko: {state.get('portfolio_items')}"
-        
         inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+
+        self.spinner.start("Generiere Antwort...")
         with torch.no_grad():
             outputs = model.generate(**inputs, max_new_tokens=200)
-        
+        self.spinner.stop()
+
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return response, outputs[0].shape[0]
 
@@ -81,7 +93,9 @@ class SpecializedNodes:
         
         prompt = f"Portfolio: {portfolio}\nAnalyst: {analyst_feedback}\nVerbesserungsvorschläge:"
         
-        inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+        inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+
+        self.spinner.start("Generiere Antwort...")
         with torch.no_grad():
             outputs = model.generate(
                 **inputs, 
@@ -89,6 +103,7 @@ class SpecializedNodes:
                 do_sample=True, 
                 temperature=0.6
             )
+        self.spinner.stop()
         
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return response, outputs[0].shape[0]
@@ -107,6 +122,8 @@ class SpecializedNodes:
         prompt = f"Erstelle Fazit für {portfolio} aus {analyst_out} und {teacher_out}:"
         
         inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+
+        self.spinner.start("Generiere Antwort...")
         with torch.no_grad():
             outputs = model.generate(
                 **inputs, 
@@ -114,51 +131,39 @@ class SpecializedNodes:
                 do_sample=True, 
                 temperature=0.7
             )
+        self.spinner.stop()
         
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return response, outputs[0].shape[0]
 
     # 5. Reporter Node (Zusammenfassung & Metriken)
     def reporter_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Sammelt alle Texte und Metriken und gibt einen formatierten Endbericht aus.
-        Kein Decorator notwendig, da keine Inferenz stattfindet.
-        """
-        print("\n" + "█"*60)
-        print("█" + " FINALER WORKFLOW BERICHT ".center(58) + "█")
-        print("█"*60)
+        print("\n--- Reporter: Finalisiere Bericht ---")
 
-        # Metriken ausgeben
-        metrics_list = state.get("metrics", [])
-        if metrics_list:
-            print("\n📊 PERFORMANCE STATISTIK:")
-            header = f"{'Modell':<35} | {'Zeit':<7} | {'Tokens':<7} | {'Speed':<10} | {'VRAM':<10}"
-            print("-" * len(header))
-            print(header)
-            print("-" * len(header))
-            
-            for m in metrics_list:
-                print(f"{m['model'][:35]:<35} | "
-                      f"{m['duration_sec']:>5.1f}s | "
-                      f"{m['tokens']:>7} | "
-                      f"{m['speed_tps']:>6.1f} t/s | "
-                      f"{m['vram_mb']:>7.0f} MB")
-            print("-" * len(header))
+        # 1. Texte sicher aus dem State holen (Keys prüfen!)
+        # WICHTIG: Die Keys müssen EXAKT so heißen wie im @log_node_performance Decorator
+        llama_text = state.get('meta-llama/Llama-3.2-3B-Instruct', 'Keine Analyse vorhanden')
+        deep_text = state.get('deepseek-ai/DeepSeek-R1-Distill-Qwen-7B', 'Kein Feedback vorhanden')
+        mistral_text = state.get('Mistral-7B-Instruct-v0.3', 'Kein Fazit vorhanden')
 
-        # Inhalte ausgeben
-        print("\n📝 INHALTLICHE ZUSAMMENFASSUNG:")
-        llama_res = state.get('meta-llama/Llama-3.2-3B-Instruct', 'N/A')
-        deep_res = state.get('deepseek-ai/DeepSeek-R1-Distill-Qwen-7B', 'N/A')
-        mistral_res = state.get('Mistral-7B-Instruct-v0.3', 'N/A')
+        # 2. Den Bericht-String zusammenbauen
+        full_report = (
+            f"=== PORTFOLIO BERICHT ===\n\n"
+            f"ANALYSRE (Llama):\n{llama_text[:500]}\n\n"
+            f"OPTIMIERUNG (DeepSeek):\n{deep_text[:500]}\n\n"
+            f"STRATEGIE (Mistral):\n{mistral_text[:500]}\n"
+        )
 
-        print(f"\n[Analyst - Llama]:\n{llama_res[:200]}...")
-        print(f"\n[Teacher - DeepSeek]:\n{deep_res[:200]}...")
-        print(f"\n[Strategist - Mistral]:\n{mistral_res[:200]}...")
+        # 3. Das Interface nutzen (Schnittstelle nach außen)
+        if hasattr(self, 'interface'):
+            self.interface.save_all(state)
 
-        print("\n" + "█"*60 + "\n")
-
-        # Report im State speichern
-        return {"report_complete": True}
+        # 4. WICHTIG: Den Key "report" zurückgeben, damit 02_simple.py ihn findet!
+        return {
+            "report": full_report,
+            "report_complete": True
+        }
+        
     
 # def florence_2_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
 #     """Node für Florenz 2 (Vision-Modell - aktuell deaktiviert)."""

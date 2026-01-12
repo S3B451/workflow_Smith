@@ -6,11 +6,12 @@ import graphviz
 from nodes import SpecializedNodes
 from model_manager import LocalModelManager
 from workflow_logger import WorkflowLogger
-
+from workflow_interface import WorkflowInterface
 ##ich uebergebe den manager die auswahl der modelle. er verwaltet das laden und entladen
 manager = LocalModelManager("modelle.json")
 logger = WorkflowLogger()
-nodes = SpecializedNodes(manager, logger)
+interface = WorkflowInterface()
+nodes = SpecializedNodes(manager, logger, interface)
 
 class PortfolioState(TypedDict):
     portfolio_items: list[dict]
