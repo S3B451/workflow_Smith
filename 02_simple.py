@@ -39,14 +39,18 @@ def choose_conversion(state: PortfolioState) -> str:
 #nodes definieren
 workflow = StateGraph(PortfolioState) #DTO definieren
 workflow.add_node("analyst", nodes.llama_3_2_3_b_node)
+workflow.add_node("precision_check", nodes.phi_4_mini_node)
 workflow.add_node("teacher", nodes.deepseek_r1_7b_node)
 workflow.add_node("strategist", nodes.mistral_7b_node)
+workflow.add_node("risk_check", nodes.gemma_2b_node)
+workflow.add_node("logic_check", nodes.deepseek_r1_1_5b_node)
+workflow.add_node("fast_analyst", nodes.qwen_3_1_7b_node)
 workflow.add_node("reporter", nodes.reporter_node)
 
 # Kanten definieren
 #nodes verbinden und flow definieren
 
-workflow.set_entry_point("analyst")
+workflow.add_edge(START, "analyst")
 workflow.add_edge("analyst", "teacher")
 workflow.add_edge("teacher", "strategist")
 workflow.add_edge("strategist", "reporter")

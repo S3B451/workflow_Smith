@@ -1,3 +1,7 @@
 /.venv
 /modelle.json
 /paktete.txt
+/md_output
+/dAbA
+/input_models.txt
+/helpers

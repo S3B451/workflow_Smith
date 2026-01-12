@@ -1,3 +1,20 @@
+
+"""ÜBERSICHT DER REGISTERIERTEN NODES
+---------------------------------------------------------------------------
+MODELL-NAME (Key)                          | NODE-NAME (Funktion)
+---------------------------------------------------------------------------
+meta-llama/Llama-3.2-3B-Instruct           | nodes.llama_3_2_3_b_node
+mistralai/Ministral-3-3B-Instruct-2512     | nodes.ministral_3_node
+deepseek-ai/DeepSeek-R1-Distill-Qwen-7B    | nodes.deepseek_r1_7b_node
+Mistral-7B-Instruct-v0.3                   | nodes.mistral_7b_node
+google/gemma-3n-E2B-it                     | nodes.gemma_2b_node
+deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B  | nodes.deepseek_r1_1_5b_node
+rd211/Qwen3-1.7B-Instruct                  | nodes.qwen_3_1_7b_node
+
+(Finalisierung & Export)                   | nodes.reporter_node
+---------------------------------------------------------------------------"""
+
+
 from typing import Dict, Any
 import torch
 from PIL import Image
@@ -62,30 +79,39 @@ class SpecializedNodes:
         # Rückgabe für den Decorator: (Antwort-Text, Token-Anzahl)
         return response, outputs[0].shape[0]
 
-    # 2. Ministral Node
-    @log_node_performance("mistralai/Ministral-3-3B-Instruct-2512")
-    def ministral_3_node(self, state: Dict[str, Any]):
-        """Node für die Portfolio-Analyse mit Ministral."""
-        model_name = "mistralai/Ministral-3-3B-Instruct-2512"
+    @log_node_performance("Qwen/Qwen2.5-7B-Instruct")
+    def qwen_2_5_7B_node(self, state: Dict[str, Any]):
+        """Hochpräzise Analyse-Node mit Qwen 2.5 7B."""
+        model_name = "Qwen/Qwen2.5-7B-Instruct"
         model, tokenizer = self.manager.load_by_name(model_name)
         
-        prompt = f"Analysiere folgendes Portfolio auf Risiko: {state.get('portfolio_items')}"
+        portfolio = state.get('portfolio_items', 'Keine Daten')
+        
+        # Qwen ist extrem gut darin, Zahlen und Fakten zu korrelieren
+        prompt = f"""Analysiere die folgenden Portfolio-Positionen. 
+        Erstelle eine kurze Tabelle mit:
+        1. Risiko-Score (1-10)
+        2. Diversifikations-Beitrag
+        3. Empfehlung (Halten/Umschichten)
+        
+        Daten: {portfolio}"""
+        
         inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
-
-        self.spinner.start("Generiere Antwort...")
+        
+        self.spinner.start("Qwen 2.5 berechnet Präzisions-Check...")
         with torch.no_grad():
-            outputs = model.generate(**inputs, max_new_tokens=200)
+            outputs = model.generate(**inputs, max_new_tokens=400, temperature=0.3)
         self.spinner.stop()
 
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return response, outputs[0].shape[0]
-
+    
     # 3. DeepSeek R1 Node (Teacher/Optimizer)
     @log_node_performance("deepseek-ai/DeepSeek-R1-Distill-Qwen-7B")
     def deepseek_r1_7b_node(self, state: Dict[str, Any]):
         """Optimierungs-Node mit DeepSeek R1."""
         model_name = "deepseek-ai/DeepSeek-R1-Distill-Qwen-7B"
-        model, tokenizer = self.manager.load_by_name(model_name, is_vision=False)
+        model, tokenizer = self.manager.load_by_name(model_name)
         
         portfolio = state.get('portfolio_items', 'Keine Daten')
         # Greift auf das Ergebnis des Analysten (Llama) zu
@@ -113,7 +139,7 @@ class SpecializedNodes:
     def mistral_7b_node(self, state: Dict[str, Any]):
         """Node für das finale Fazit mit Mistral 7B."""
         model_name = "Mistral-7B-Instruct-v0.3"
-        model, tokenizer = self.manager.load_by_name(model_name, is_vision=False)
+        model, tokenizer = self.manager.load_by_name(model_name)
         
         portfolio = state.get('portfolio_items', 'Keine Daten')
         analyst_out = state.get('meta-llama/Llama-3.2-3B-Instruct', 'Keine Analyse')
@@ -136,35 +162,155 @@ class SpecializedNodes:
         response = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return response, outputs[0].shape[0]
 
-    # 5. Reporter Node (Zusammenfassung & Metriken)
+    # 5. Google Gemma Node
+    @log_node_performance("google/gemma-3n-E2B-it")
+    def gemma_2b_node(self, state: Dict[str, Any]):
+        """Node für die Verarbeitung mit Google Gemma 2B."""
+        model_name = "google/gemma-3n-E2B-it"
+        model, tokenizer = self.manager.load_by_name(model_name)
+        
+        # Beispielhafter Prompt für dieses Modell
+        prompt = f"Fasse die Kernrisiken für folgendes Portfolio zusammen: {state.get('portfolio_items')}"
+        
+        inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+        
+        self.spinner.start("Gemma analysiert...")
+        with torch.no_grad():
+            outputs = model.generate(**inputs, max_new_tokens=250)
+        self.spinner.stop()
+
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        # Rückgabe für den Decorator: (Antwort-Text, Token-Anzahl)
+        return response, outputs[0].shape[0]
+
+    # 6. DeepSeek R1 1.5B Node
+    @log_node_performance("deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B")
+    def deepseek_r1_1_5b_node(self, state: Dict[str, Any]):
+        """Node für Reasoning und Logik-Check mit DeepSeek R1 1.5B."""
+        model_name = "deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B"
+        model, tokenizer = self.manager.load_by_name(model_name)
+        
+        # DeepSeek R1 nutzt oft <reasoning> Tags oder Chain-of-Thought
+        prompt = f"Prüfe die bisherigen Ergebnisse auf logische Konsistenz: {state.get('portfolio_items')}"
+        
+        inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+        
+        self.spinner.start("DeepSeek denkt nach (Reasoning)...")
+        with torch.no_grad():
+            # Höheres Token-Limit, da Reasoning-Modelle oft längere interne Denkprozesse haben
+            outputs = model.generate(**inputs, max_new_tokens=450, temperature=0.6)
+        self.spinner.stop()
+
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        # Rückgabe für den Decorator: (Antwort-Text, Token-Anzahl)
+        return response, outputs[0].shape[0]
+    # 7. Qwen 1.7B Node
+    @log_node_performance("rd211/Qwen3-1.7B-Instruct")
+    def qwen_3_1_7b_node(self, state: Dict[str, Any]):
+        """Node für extrem schnelle Kurz-Analysen mit Qwen 1.7B."""
+        model_name = "rd211/Qwen3-1.7B-Instruct"
+        model, tokenizer = self.manager.load_by_name(model_name)
+        
+        prompt = f"Erstelle eine ultrakurze Liste der 3 wichtigsten Assets: {state.get('portfolio_items')}"
+        
+        inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+        
+        self.spinner.start("Qwen 1.7B arbeitet...")
+        with torch.no_grad():
+            outputs = model.generate(**inputs, max_new_tokens=150)
+        self.spinner.stop()
+
+        response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+        return response, outputs[0].shape[0]
+
+    # 8. Reporter Node (VRAM-sicher & Dynamisch)
     def reporter_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
-        print("\n--- Reporter: Finalisiere Bericht ---")
+        print("\n---  Reporter: Generiere finalen Bericht ---")
+        
+        #  DEBUG: Zeige uns, was wirklich im State gelandet ist
+        print(f"DEBUG: Vorhandene Keys im State: {list(state.keys())}") 
 
-        # 1. Texte sicher aus dem State holen (Keys prüfen!)
-        # WICHTIG: Die Keys müssen EXAKT so heißen wie im @log_node_performance Decorator
-        llama_text = state.get('meta-llama/Llama-3.2-3B-Instruct', 'Keine Analyse vorhanden')
-        deep_text = state.get('deepseek-ai/DeepSeek-R1-Distill-Qwen-7B', 'Kein Feedback vorhanden')
-        mistral_text = state.get('Mistral-7B-Instruct-v0.3', 'Kein Fazit vorhanden')
+        internal_keys = ['portfolio_items', 'metrics', 'report', 'report_complete', 'final_data']
+        report_sections = []
+        report_sections.append("===  DYNAMISCHER PORTFOLIO BERICHT ===")
+        report_sections.append(f"Zeitstempel: {datetime.now().strftime('%H:%M:%S')}\n")
 
-        # 2. Den Bericht-String zusammenbauen
-        full_report = (
-            f"=== PORTFOLIO BERICHT ===\n\n"
-            f"ANALYSRE (Llama):\n{llama_text[:500]}\n\n"
-            f"OPTIMIERUNG (DeepSeek):\n{deep_text[:500]}\n\n"
-            f"STRATEGIE (Mistral):\n{mistral_text[:500]}\n"
-        )
+        found_content = False
+        for key, value in state.items():
+            # Wir ignorieren interne Felder
+            if key in internal_keys:
+                continue
+            
+            # Falls der Decorator ein Tupel (Text, Tokens) speichert, extrahieren wir nur den Text
+            content = ""
+            if isinstance(value, tuple) and len(value) > 0:
+                content = str(value[0])
+            elif isinstance(value, str):
+                content = value
+            
+            if content and len(content) > 10: # Nur Sektionen mit echtem Inhalt
+                found_content = True
+                clean_name = key.split('/')[-1] if '/' in key else key
+                report_sections.append(f"🔹 ABSCHNITT: {clean_name.upper()}")
+                report_sections.append(f"{content[:1000]}") # Erste 1000 Zeichen
+                report_sections.append("-" * 40)
 
-        # 3. Das Interface nutzen (Schnittstelle nach außen)
-        if hasattr(self, 'interface'):
+        if not found_content:
+            report_sections.append(" HINWEIS: Keine Analyse-Inhalte in den Nodes gefunden.")
+            report_sections.append(f"Gefundene Keys: {list(state.keys())}")
+
+        full_report = "\n".join(report_sections)
+
+        #  Interface-Speicherung
+        if hasattr(self, 'interface') and self.interface:
             self.interface.save_all(state)
 
-        # 4. WICHTIG: Den Key "report" zurückgeben, damit 02_simple.py ihn findet!
         return {
             "report": full_report,
             "report_complete": True
         }
         
-    
+
+
+
+#macht nur aerger wegen tokenizer
+    # # 2. Ministral Node
+    # @log_node_performance("mistralai/Ministral-3-3B-Instruct-2512")
+    # def ministral_3_node(self, state: Dict[str, Any]):
+    #     """Node für die Portfolio-Analyse mit Ministral."""
+    #     model_name = "mistralai/Ministral-3-3B-Instruct-2512"
+    #     model, tokenizer = self.manager.load_by_name(model_name)
+        
+    #     prompt = f"Analysiere folgendes Portfolio auf Risiko: {state.get('portfolio_items')}"
+    #     inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+
+    #     self.spinner.start("Generiere Antwort...")
+    #     with torch.no_grad():
+    #         outputs = model.generate(**inputs, max_new_tokens=200)
+    #     self.spinner.stop()
+
+    #     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    #     return response, outputs[0].shape[0]
+
+    # macht nur aerger wegen transformators version
+    # @log_node_performance("microsoft/Phi-4-mini-instruct")
+    # def phi_4_mini_node(self, state: Dict[str, Any]):
+    #     """Hochpräzise Analyse-Node mit Microsoft Phi-4-mini."""
+    #     model_name = "microsoft/Phi-4-mini-instruct"
+    #     model, tokenizer = self.manager.load_by_name(model_name)
+        
+    #     # Phi-4 ist exzellent darin, Datenpunkte exakt zu bewerten
+    #     prompt = f"Bewertet die folgenden Portfolio-Positionen auf einer Skala von 1-10 bezüglich Risiko und Rendite: {state.get('portfolio_items')}"
+        
+    #     inputs = tokenizer(prompt, return_tensors="pt").to("cuda")
+        
+    #     self.spinner.start("Phi-4 analysiert präzise...")
+    #     with torch.no_grad():
+    #         outputs = model.generate(**inputs, max_new_tokens=300, temperature=0.4)
+    #     self.spinner.stop()
+
+    #     response = tokenizer.decode(outputs[0], skip_special_tokens=True)
+    #     return response, outputs[0].shape[0]   
 # def florence_2_node(self, state: Dict[str, Any]) -> Dict[str, Any]:
 #     """Node für Florenz 2 (Vision-Modell - aktuell deaktiviert)."""
 #     print("--- Node: Florenz 2 wird aktiv ---")
