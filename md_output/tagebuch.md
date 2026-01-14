@@ -418,3 +418,53 @@
 ##  Run am 14:17:55.878
 | Modell | Zeit | Speed | VRAM |
 | :--- | :---: | :---: | :---: |
+
+##  Run am 15:38:09.727
+| Modell | Zeit | Speed | VRAM |
+| :--- | :---: | :---: | :---: |
+
+##  Run am 18:05:55.225
+| Modell | Zeit | Speed | VRAM |
+| :--- | :---: | :---: | :---: |
+
+##  Run am 19:01:13.412
+| Modell | Zeit | Speed | VRAM |
+| :--- | :---: | :---: | :---: |
+| meta-llama/Llama-3.2-3B-Instruct | 16.31s | 16.92 t/s | 0.01 GB |
+| deepseek-ai/DeepSeek-R1-Distill-Qwen-7B | 449.85s | 1.24 t/s | 0.01 GB |
+| Mistral-7B-Instruct-v0.3 | 29.12s | 8.65 t/s | 0.00 GB |
+| google/gemma-3n-E2B-it | 71.57s | 4.07 t/s | 0.01 GB |
+| deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B | 35.99s | 13.76 t/s | 0.00 GB |
+| rd211/Qwen3-1.7B-Instruct | 16.63s | 11.67 t/s | 0.00 GB |
+
+##  Run am 21:10:52.422
+| Modell | Zeit | Speed | VRAM |
+| :--- | :---: | :---: | :---: |
+| Mistral-7B-Instruct-v0.3 | 56.59s | 9.86 t/s | 0.00 GB |
+| Mistral-7B-Instruct-v0.3 | 56.59s | 9.86 t/s | 0.00 GB |
+| deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B | 41.75s | 15.88 t/s | 0.00 GB |
+| Mistral-7B-Instruct-v0.3 | 56.59s | 9.86 t/s | 0.00 GB |
+| Mistral-7B-Instruct-v0.3 | 56.59s | 9.86 t/s | 0.00 GB |
+| deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B | 41.75s | 15.88 t/s | 0.00 GB |
+| meta-llama/Llama-3.2-3B-Instruct | 61.59s | 77.6 t/s | 0.01 GB |
+
+##  Run am 21:23:34.794
+| Modell | Zeit | Speed | VRAM |
+| :--- | :---: | :---: | :---: |
+| Mistral-7B-Instruct-v0.3 | 60.74s | 9.19 t/s | 0.00 GB |
+| Mistral-7B-Instruct-v0.3 | 60.74s | 9.19 t/s | 0.00 GB |
+| deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B | 44.62s | 14.86 t/s | 0.00 GB |
+| Mistral-7B-Instruct-v0.3 | 60.74s | 9.19 t/s | 0.00 GB |
+| Mistral-7B-Instruct-v0.3 | 60.74s | 9.19 t/s | 0.00 GB |
+| deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B | 44.62s | 14.86 t/s | 0.00 GB |
+| meta-llama/Llama-3.2-3B-Instruct | 47.61s | 98.14 t/s | 0.01 GB |
+
+##  Run am 21:44:19.159
+| Modell | Zeit | Speed | VRAM |
+| :--- | :---: | :---: | :---: |
+| meta-llama/Llama-3.2-1B-Instruct | 26.69s | 181.35 t/s | 0.00 GB |
+
+##  Run am 21:52:34.764
+| Modell | Zeit | Speed | VRAM |
+| :--- | :---: | :---: | :---: |
+| llama_out | 28.58s | 169.33 t/s | 0.00 GB |

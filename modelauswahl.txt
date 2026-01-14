@@ -1,0 +1,21 @@
+Llama 3.2 3B (Meta): Es ist der beste Allrounder für den Einstieg. 
+Wenn du ein Portfolio-Dokument einliest, 
+erkennt Llama am besten die „Stimmung“ oder die allgemeine Ausrichtung des Nutzers.
+
+DeepSeek R1 (7B & 1.5B): Diese Modelle nutzen „Chain-of-Thought“ (CoT).
+ Sie sagen nicht nur das Ergebnis, sondern „denken“ laut nach. 
+ Das ist perfekt, um zu verstehen, warum eine Aktie als riskant eingestuft wurde.
+
+Phi-4 Mini (Microsoft): Microsoft hat Phi auf Lehrbuch-Niveau trainiert. 
+Es ist weniger kreativ, dafür aber viel seltener bei Fakten oder Logik-Ketten im Irrtum. 
+Ideal als „Gegenprüfer“.
+
+Mistral 7B v0.3 (Mistral AI): Ein sehr „stabiles“ Modell. 
+Es neigt weniger zum Plaudern und kommt direkt zum Punkt. Perfekt für das finale Fazit.
+
+Qwen 3 1.7B (Alibaba): Qwen-Modelle sind Weltklasse, wenn es um strukturierte Daten geht. 
+Wenn du aus einem Fließtext eine saubere JSON-Liste deiner Assets machen willst, ist 
+Qwen dein Kandidat.
+
+Gemma 2B (Google): Gemma ist sehr „folgsam“. Wenn du sagst: „Antworte NUR mit JA oder NEIN“, 
+hält sich Gemma meist besser daran als das kreativere Llama.

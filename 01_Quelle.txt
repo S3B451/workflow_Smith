@@ -1,0 +1,129 @@
+Rent regulation
+
+Rent regulation is a system of laws for the rental market of dwellings, with controversial effects on affordability of housing and tenancies. Generally, a system of rent regulation involves:
+
+Price controls, limits on the rent that a landlord may charge, typically called rent control or rent stabilization
+Eviction controls: codified standards by which a landlord may terminate a tenancy[1]: 1  [2]: 1 
+Obligations on the landlord or tenant regarding adequate maintenance of the property
+A system of oversight and enforcement by an independent regulator and
+
+The term "rent control" covers a spectrum of regulation which can vary from setting the absolute amount of rent that can be charged, with no allowed increases, to placing different limits on the amount that rent can increase; these restrictions may continue between tenancies, or may be applied only within the duration of a tenancy.[3] As of 2016, at least 14 of the 36 OECD countries have some form of rent control in effect,[4] including four states in the United States.[5][6]
+
+Rent regulation is implemented in many diverse forms. It is one of several classes of policies intended to improve housing affordability. However, there is consensus among economists that rent control reduces the quality and quantity of housing units.[7]: 1 [8][9][10][11][12][13][14]
+
+Forms
+Rent control can apply to several types of price control:
+
+"strict price ceilings", also known as rent freeze systems, or absolute or first generation rent controls, in which no increases in rent are allowed at all (rent is typically frozen at the rate existing when the law was enacted)
+"vacancy control", also known as strict or strong rent control, in which the rental price can rise, but continues to be regulated in between tenancies (a new tenant pays almost the same rent as the previous tenant) and
+"vacancy decontrol", also known as tenancy or second-generation rent control, which limits price increases during a tenancy, but allows rents to rise to market rate between tenancies (new tenants pay market rate rent, but increases are limited as long as they remain).[15]
+Rent price controls remain the most controversial element of a system of rent regulation.
+
+Effects
+
+Producer surplus decreases due to price ceiling. Consumer surplus can increase but does not have to, quantity decreases and demand increases.
+On housing supply
+There is consensus among economists that rent control reduces the quality and quantity of rental housing units.[7]: 1 [8][9][10][11][13][14][16][17] However, some economists challenge this consensus and argue that controls do not have a statistically significant impact on quantity and quality of housing units.[18][19][20]
+
+One historical example of widespread rent control occurred in the US during World War II. Roughly 80% of rental housing was put under rent control in 1941. The observed result was that landlords opted to sell their units at uncontrolled prices rather than renting at controlled prices, leading to an increase in home ownership and a decrease in rental units.[21]
+
+A number of neo-classical and Keynesian economists say that some forms of rent control regulations create shortages and exacerbate scarcity in the housing market by discouraging private investment in the rental market. In addition, there would be a dead weight loss and inefficiency since some of the loss due to price ceilings is never gained again.[22][23] This analysis targeted nominal rent freezes, and the studies conducted were mainly focused on rental prices in Manhattan, or elsewhere in the United States.[citation needed]
+
+In 1971, the Swedish economist Assar Lindbeck, a housing expert, said that "rent control appears to be the most efficient technique presently known to destroy a city – except for bombing".[24][25] In 1989, Nguyễn Cơ Thạch, then Foreign Minister of Vietnam, observed, "The Americans couldn’t destroy Hanoi, but we have destroyed our city by very low rents. We realized it was stupid and that we must change policy."[26]
+
+In a 1992 stratified, random survey of 464 US economists, economics graduate students, and members of the American Economic Association, 93% "generally agreed" or "agreed with provisos" that "A ceiling on rents reduces the quantity and quality of housing available."[27]: 204  [28]: 1 
+
+A 2009 review of the economic literature[23]: 106  by Blair Jenkins through EconLit covering theoretical and empirical research on multiple aspects of the issue, including housing availability, maintenance and housing quality, rental rates, political and administrative costs, and redistribution, for both first generation and second generation rent control systems, found that "the economics profession has reached a rare consensus: Rent control creates many more problems than it solves".[23]: 105  [29]: 1  [30]: 1  [31]: 1 .
+
+In a 2012 poll of 41 economists by the Initiative on Global Markets (IGM) Economic Experts Panel, which queried opinions on the statement "Local ordinances that limit rent increases for some rental housing units, such as in New York and San Francisco, have had a positive impact over the past three decades on the amount and quality of broadly affordable rental housing in cities that have used them," 13 members said they strongly disagreed, 20 disagreed, 1 agreed, and 7 either did not answer, were undecided, or had no opinion.[32] [2]: 1  [33]: 1 .
+
+In David Sims's 2007 study of the deregulation of the housing market in Cambridge, Massachusetts, he found that "rent control had little effect on the construction of new housing but did encourage owners to shift units away from rental status and reduced rents substantially."[34]
+
+Paul Krugman writes that rent control inhibits construction of new housing, creates bitter tenant–landlord relations, and in markets with not all apartments under rent control, causes an increase in rents for uncontrolled units.[28]
+
+Thomas Sowell wrote in 2008 that rent control reduces the supply of housing,[35]: 4  and has stated that rent control increases urban blight.[35]: 5  [36]: 1 
+
+In 1994, San Francisco voters passed a ballot initiative which expanded the city's existing rent control laws to include small multi-unit apartments with four or fewer units, built prior to 1980 (about 30% of the city's rental housing stock at the time).[37]: 7 [38]: 1 [39]: 1  A 2019 study found that San Francisco's rent control laws resulted in landlords removing 30% of the rent controlled units from the rental market (by conversion to condos or TICs) which led to a 15% citywide decrease in total rental units, and a 7% increase in citywide rents.[40][38][39][41][42]: 1 [43]: 1 [44]
+
+On low income renters
+In a 2013 analysis of the body of economic research on rent control by Peter Tatian at the Urban Institute, he stated that "The conclusion seems to be that rent stabilization doesn't do a good job of protecting its intended beneficiaries—poor or vulnerable renters—because the targeting of the benefits is very haphazard.", and concluded that: "Given the current research, there seems to be little one can say in favor of rent control." [29]: 1  [2]: 1  [45]: 1 
+
+A 2016 study by NYU's Furman Center takes a more positive view on rent regulation, especially as a tool to slow gentrification: "Although rent regulation is ill-targeted if viewed as a purely redistributional program," write the three authors of the study, "as a program to promote longer-term lower rent tenancies for the tenants who benefit from it, even in hot rental markets, it seems to succeed."[46]
+
+A 2021 Columbia Business School study found that there are benefits to rent regulation,[47] arguing that "the housing stability they provide disproportionately benefits low-income households. These insurance benefits trade off against the aggregate and spatial distortions in housing and labor markets that accompany such policies."
+
+Alternatives
+To address the challenges lower-income individuals and families face in securing affordable housing, research points to more effective interventions. According to a research review by Lisa Sturtevant, key strategies include increasing federal housing vouchers and expanding the Low-Income Housing Tax Credit (LIHTC) program, both of which are seen as more promising for creating affordable housing options.[48]
+
+The Reason Foundation identifies, next to housing vouchers, less restrictive zoning and building regulations as a key alternative to improve housing affordability. They argue that these regulations inflate development costs, thus limiting the availability of affordable rental units. Reducing these regulatory burdens and simplifying approval procedures will encourage new construction and expand the housing supply.[49]
+
+History
+
+A 1945 comic explaining rent control under the U.S. Office of Price Administration
+[icon]	
+This section needs expansion. You can help by expanding it. (March 2019)
+Early modern Europe
+Rent control was used in Rome as early as 1470 to protect Jewish residents from price gouging. Since Jews in the Papal States were forbidden to own property, they were dependent on Christian landlords, who charged them high rents. In 1562, Pope Pius IV granted Jews the right to own property worth up to 1,500 Roman scudi and enacted rent stabilization. In 1586, Pope Sixtus V issued a bull ordering landlords to rent out houses to Jewish tenants at reasonable rates.[50]
+
+By country
+Australia
+Rental regulations are administered by the state and territory governments. Rent control and freezes were features of the First and Second World War, the Great Depression, and the early stages of the COVID-19 pandemic.[51]
+
+Australian Capital Territory
+The Australian Capital Territory (ACT) is the only jurisdiction with regulation specifying maximum rent increases. Rents can only be increased for sitting tenants once a year by a maximum of 110% of the consumer price index for the cost of rent in the ACT.[52][53][54] Rents between tenancies are not regulated, and are allowed to rise to market rate upon vacancy (vacancy decontrol).[53][55] Rent increases above the amount prescribed by regulation may be disputed by application to the ACT Civil and Administrative Tribunal (ACAT).[56][57] Other Australian jurisdictions allow for rent increases every six to twelve months with variable notice periods.[58]
+
+New South Wales
+New South Wales has a small number of tenants who are not covered by the Residential Tenancies Act 2010 (NSW),[59] but rather continuing provisions of the repealed Landlord and Tenant (Amendment) Act 1948 (NSW).[60][61][62][63] Such ‘protected tenants’ pay a regulated ‘fair rent’ set either through a Section 17A agreement registered with NSW Fair Trading, or a magistrate sitting as the Fair Rents Board (NSW).[61][64]
+
+Canada
+Main article: Rent regulation in Canada
+In Canada, there are rent regulation laws in each province. For example, in Ontario the Residential Tenancies Act 2006 requires that prices for rented properties do not rise more than 2.5 percent each year, or a lower figure fixed by a government minister.
+
+China
+China announced in August 2021 new nationwide rent regulations that cap maximum yearly rent increases to 5% in all urban areas, which comprise over 2/3 of the population and include most of the ~250 million renters in the country.[65]
+
+Egypt
+Rent controls were temporarily introduced in the 1920s in the wake of a housing shortage after World War I. The same happened after a housing shortage instigated price gouging during World War II, in an attempt to protect tenant rights.[66] The controls reduced rent values of existing contracts by a certain percentage, leaving new contracts free of price controls so as not to disincentivise new build. The temporary controls were made permanent with Law 121/1947 which also added eviction controls by de-limiting rental terms which could only end if an owner needed the unit for own use, the building collapsed, non-payment, or other breaches of contract.[67] Controls also allowed reporting of vacancy, allowing unused properties to be rented out if a tenant requested that. These became colloquially known as Old Rent.
+
+In 1996, amid broader neoliberal structural adjustment, Law 4/1996 was introduced, known as New Rent, deregulating rental for all new contracts, while leaving Old Rent (rent control) contracts untouched, citing the risk of mass eviction and unrest.[68]
+
+In 2025, Law 164/2025 was ratified ending the rent control system, putting 1.6 million households, comprising 7% of all households in Egypt, in jeopardy of imminent eviction,[69] and threatening to exacerbate existing housing problems. Under Old Rents approximately one third pay less than USD 1 (EGP 50) per month in rent.[70] Rent for rent-regulated apartments will be allowed to rise by 10-20 times in the first year, than 15% for six further years before a final jump to market rate.[71] One example given is a tenant who has lived in the same apartment since 1984 whose monthly rent will increase from (in US dollars) $0.82 to $123.60 (from 40 to 6,000 Egyptian pounds).[71]
+
+France
+Rent regulations are determined in France based on the Rent Reference Index, which serves as the basis for what landlords can increase yearly rents by.[72] In July 2022, France introduced a new cap on yearly rent increase of a maximum of 3.5% for one year.[73]
+
+Germany
+German rent regulation is found in the "Civil Code" (the Bürgerliches Gesetzbuch) in § 535 to § 580a.[74] As common in German law, regulations are structured into an abstract, more general part that applies to all contracts of a certain type, followed by a more specific section for individual fields of application of this type of contract. Specific regulations for rental contracts governing apartments range from §§ 549 - 577a BGB.
+
+The German law differentiates between the rental price at the starting point of the contract and rent increases throughout the duration of the contract. Generally, the rental price at the starting point of the contract is determined by the contractual agreement between the parties. Only in designated regions with a strained housing market, the rental price at the beginning of the rental agreement are capped by law. Increases in the rental prices throughout the duration of a rental contract are required to follow a "rent level" (Mietspiegel), which is a database of local reference rent prices. This collects all rent prices of new rental contracts of the past four years, and landlords may only increase prices on their property in line with rents in the same locality. Usury Rents are prohibited altogether, so that any price rises above 20 per cent over three years are unlawful.[75]
+
+Tenants may be evicted against their will through a court procedure for a good reason, and in the normal case only with a minimum of three months' notice.[76] Tenants receive unlimited duration of their rental agreement unless the duration is explicitly halted. In practice, landlords have little incentive to change tenants as rental price increases beyond inflation are constrained. During the period of the tenancy, a person's tenancy may only be terminated for very good reasons. A system of rights for the rental property to be maintained by the landlord is designed to ensure quality of housing. Many states, such as Berlin, have a constitutional right to adequate housing, and require buildings to make dwelling spaces of a certain size and ceiling height.[citation needed]
+
+In 2020, Berlin implemented a rent freeze, which was unprecedented in the German housing market. It benefitted sitting renters, but it substantially reduced the supply of new housing, harming those looking for a dwelling. The rent freeze was repealed in 2021.[77]
+
+Netherlands
+Yearly rent increases in the Netherlands are capped at a maximum of inflation + 1%, calculated as 3.3% in 2022.[78]
+
+Spain
+The Catalonia region of Spain passed a rent-regulation law in September 2020.[79]
+
+United Kingdom
+See also: History of rent control in England and Wales, Affordability of housing in the United Kingdom, Rent regulation in England and Wales, Rent control in Scotland, and English land law
+
+UK house prices (1975–2006)
+Rent regulation covered the whole of the UK private sector rental market from 1915 to 1980. However, from the Housing Act 1980, it became Conservative Party policy to deregulate and dismantle rent regulation. Regulation for all new tenancies was abolished by the Housing Act 1988, leaving the basic regulatory framework was "freedom of contract" by the landlord to set any price. Rent regulations survive among a small number of council houses, and often the rates set by local authorities mirror escalating prices in the non-regulated private market.
+
+United States
+Main article: Rent control in the United States
+See also: Rent control in California, Rent regulation in New York, and Rent control in Massachusetts
+Rent regulation in the United States is an issue for each state. In 1921, the US Supreme Court case of Block v. Hirsh[80] held that regulation of rents in the District of Columbia as a temporary emergency measure was constitutional, but shortly afterward in 1924 in Chastleton Corp v. Sinclair[81] the same law was unanimously struck down by the Supreme Court. After the 1930s New Deal, the Supreme Court ceased to interfere with social and economic legislation, and many states adopted rules.[citation needed] In the 1986 case of Fisher v. City of Berkeley,[82] the US Supreme court held that there was no incompatibility between rent control and the Sherman Act.
+
+Rent control existed in several Massachusetts communities from 1970 to 1994. During this time, at least 20% of all rent-controlled apartments in Cambridge housed the rich.[83] The vast majority housed middle- and high-income earners.[83] They included Frederik, Crown Prince of Denmark.[83]
+
+As of 2018, 4 states (California, New York, New Jersey, and Maryland) and the District of Columbia have localities in which some form of residential rent control is in effect (for normal structures, excluding mobile homes).[5][6] 37 states either prohibit or preempt rent control, while 9 states allow their cities to enact rent control, but have no cities that have implemented it.[5][6] For the localities with rent control, it often covers a large percentage of that city's stock of rental units: For example: in New York City in 2011, 45% of rental units were either "rent-stabilized" or "rent-controlled", (these are different legal classifications in NYC) [84]: 1  in the District of Columbia in 2014, just over 50% of rental units were rent-controlled, [85]: 1  in San Francisco, as of 2014, about 75% of all rental units were rent-controlled, [86]: 1  and in Los Angeles in 2014, 80% of multifamily units were rent controlled. [87]: 1 
+
+In 2019 California passed a statewide rent cap for the next 10 years which limits yearly rent increases to 5% plus regional inflation.[88]
+
+In 2019 Oregon's legislature passed a bill which made the state the first in the nation to adopt a state-wide rent control policy. This law limits annual rent increases to inflation plus 7 percent, includes vacancy decontrol (market rate between tenancies), exempts new construction for 15 years, and maintains the state ban on local rent control policies (state level preemption). [89]: 1  [90]: 1 
+
+In November 2021, voters in Saint Paul, Minnesota passed a rent control ballot initiative which capped annual rent increases at 3 percent, included vacancy control, and did not exempt new construction, nor allow inflation to be added to the allowable rate increase.[91][92] This was followed by an 80% reduction in requests for new multifamily housing permits, while in neighboring Minneapolis, where voters authorized the city council to craft a rent control ordinance, yet to be enacted—which may exempt new construction from the rent control caps—permits were up 68%.[91][93]

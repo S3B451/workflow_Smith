@@ -1,6 +1,6 @@
 
 from langgraph.graph import StateGraph, START, END
-from typing import TypedDict, Literal
+from typing import TypedDict, Literal, Dict, Any, Annotated, List
 from IPython.display import display, Image
 import graphviz
 from nodes import SpecializedNodes
@@ -13,13 +13,28 @@ logger = WorkflowLogger()
 interface = WorkflowInterface()
 nodes = SpecializedNodes(manager, logger, interface)
 
+# class PortfolioState(TypedDict):
+#     portfolio_items: list[dict]
+#     analyst_out: str    # Ergebnis von Llama
+#     teacher_out: str    # Ergebnis von DeepSeek
+#     strategist_out: str # Ergebnis von Mistral
+#     metrics: list[dict] # Die Performance-Daten
+#     report: str         # Der finale Text
+
 class PortfolioState(TypedDict):
-    portfolio_items: list[dict]
-    analyst_out: str    # Ergebnis von Llama
-    teacher_out: str    # Ergebnis von DeepSeek
-    strategist_out: str # Ergebnis von Mistral
-    metrics: list[dict] # Die Performance-Daten
-    report: str         # Der finale Text
+    # --- Start-Objekt (Die Quelle) ---
+    portfolio_items: List[Dict[str, Any]]
+    # --- Zwischenergebnisse (Parallele Nodes) ---
+    # Wir nutzen den Funktionsnamen als Key (passend zum state_packer)
+    llama_3_2_3_b_node: str  # Analyse von Llama
+    qwen_3_1_7b_node: str    # Daten-Extraktion von Qwen
+    # --- Kontroll-Ebene ---
+    deepseek_r1_7b_node: str # Abgleich & Erkenntnisse
+    # --- Struktur-Ebene ---
+    gemma_2b_node: Dict[str, Any] # Finales JSON-Format
+    # --- Infrastruktur ---
+    metrics: Annotated[List[Dict[str, Any]], operator.add]
+    report: str
 #nodes gestalten
 def calc_total(state: PortfolioState) -> PortfolioState:
     state["total_usd"] = state["amount_usd"] * 1.08
@@ -38,23 +53,51 @@ def choose_conversion(state: PortfolioState) -> str:
 
 #nodes definieren
 workflow = StateGraph(PortfolioState) #DTO definieren
-workflow.add_node("analyst", nodes.llama_3_2_3_b_node)
-workflow.add_node("precision_check", nodes.phi_4_mini_node)
-workflow.add_node("teacher", nodes.deepseek_r1_7b_node)
-workflow.add_node("strategist", nodes.mistral_7b_node)
-workflow.add_node("risk_check", nodes.gemma_2b_node)
-workflow.add_node("logic_check", nodes.deepseek_r1_1_5b_node)
-workflow.add_node("fast_analyst", nodes.qwen_3_1_7b_node)
+workflow.add_node("llama323B", nodes.llama_3_2_3_b_node)#16
+workflow.add_node("deepseekr17B", nodes.deepseek_r1_7b_node)
+workflow.add_node("mistral7B", nodes.mistral_7b_node)#30
+workflow.add_node("gemma2B", nodes.gemma_2b_node)
+workflow.add_node("deepseekR115B", nodes.deepseek_r1_1_5b_node)#35
+workflow.add_node("qwen317B", nodes.qwen_3_1_7b_node)#11
 workflow.add_node("reporter", nodes.reporter_node)
 
 # Kanten definieren
 #nodes verbinden und flow definieren
+# --- FLOW DEFINITION ---
 
-workflow.add_edge(START, "analyst")
-workflow.add_edge("analyst", "teacher")
-workflow.add_edge("teacher", "strategist")
-workflow.add_edge("strategist", "reporter")
+# 1. Fan-out: Beide starten gleichzeitig aus der Quelle
+workflow.add_edge(START, "llama323B")
+workflow.add_edge(START, "qwen317B")
+
+# 2. Fan-in: DeepSeek wartet, bis BEIDE fertig sind
+workflow.add_edge("llama323B", "deepseekr17B")
+workflow.add_edge("qwen317B", "deepseekr17B")
+
+# 3. Lineare Weitergabe
+workflow.add_edge("deepseekr17B", "gemma2B")
+workflow.add_edge("gemma2B", "reporter")
 workflow.add_edge("reporter", END)
+
+workflow.add_edge(START, "llama323B")
+workflow.add_edge(START, "qwen317B")
+workflow.add_edge("llama323B", "deepseekr17B")
+workflow.add_edge("deepseekr17B", "gemma2B")
+workflow.add_edge("gemma2B", "reporter")
+workflow.add_edge("reporter", END)
+
+
+#workflow.add_edge("mistral7B", "gemma2B")
+#workflow.add_edge("gemma2B", "deepseekR115B")
+#workflow.add_edge("deepseekR115B", "qwen317B")
+#workflow.add_edge("qwen317B", "reporter")
+# workflow.add_edge("reporter", END)
+
+
+# workflow.add_edge(START, "analyst")
+# workflow.add_edge("analyst", "teacher")
+# workflow.add_edge("teacher", "strategist")
+# workflow.add_edge("strategist", "reporter")
+# workflow.add_edge("reporter", END)
 #nodes verbinden und flow definieren
 
 graph = workflow.compile()
